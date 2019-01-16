@@ -12,7 +12,7 @@ public class Background extends GameObject {
         super();
         BufferedImage image = SpriteUtils.loadImage("assets/images/background/0.png");
         this.renderer = new SingleImageRenderer(image);
-        this.position.set(0, 600 - image.getHeight());
+        this.position.set(0, Setting.SCREEN_HEIGHT - image.getHeight());
         this.velocity.set(0, 1);
         this.anchor.set(0, 0);
     }
@@ -25,9 +25,9 @@ public class Background extends GameObject {
     }
 
     private void limitPositon() {
-        if (this.position.y == 0)
-        {
-            this.velocity.set(0,0);
+        if (this.position.y > 0) {
+            this.position.set(0, 0);
+            this.velocity.set(0, 0);
         }
     }
 }

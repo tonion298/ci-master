@@ -15,37 +15,28 @@ public class GameObject {
         gameObjects.add(object);
     }
 
-    public static <E extends GameObject> E recycle(Class<E> cls)
-    {
+    public static <E extends GameObject> E recycle(Class<E> cls) {
         //1. findInactive > reset > return
         //2. if can not findInactive > create new > return
         E object = findInactive(cls);
-        if(object != null)
-        {
+        if (object != null) {
             object.reset();
             return object;
-        }
-        else {
-            try
-            {
+        } else {
+            try {
                 return cls.getConstructor().newInstance();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 return null;
             }
         }
     }
 
-    public static <E extends GameObject> E findInactive(Class<E> cls)
-    {
-        for(int i = 0; i < gameObjects.size(); i++)
-        {
+    public static <E extends GameObject> E findInactive(Class<E> cls) {
+        for (int i = 0; i < gameObjects.size(); i++) {
             GameObject object = gameObjects.get(i);
-            if(!object.isActive
-                && cls.isAssignableFrom(object.getClass()))
-            {
-                return (E)object;
+            if (!object.isActive
+                    && cls.isAssignableFrom(object.getClass())) {
+                return (E) object;
             }
 
         }
@@ -58,9 +49,9 @@ public class GameObject {
 
     public static void runAll() {
         for (int i = 0; i < gameObjects.size(); i++) {
-            GameObject object = gameObjects.get(i); // GameObject, Player, Background
+            GameObject object = gameObjects.get(i); // GameObject, player, Background
             if (object.isActive) {
-                object.run(); // GameObject.run() || Player.run() || Background.run()
+                object.run(); // GameObject.run() || player.run() || Background.run()
             }
         }
     }
@@ -74,13 +65,13 @@ public class GameObject {
         }
     }
 
-    public static <E extends GameObject> E findIntersected (Class<E> cls, BoxColider boxColider) {
+    public static <E extends GameObject> E findIntersected(Class<E> cls, BoxColider boxColider) {
         for (int i = 0; i < gameObjects.size(); i++) {
             GameObject object = gameObjects.get(i);
             if (cls.isAssignableFrom(object.getClass())
-                && object instanceof Physics
-                && ((Physics) object).getBoxColider().intersected(boxColider)
-                && object.isActive) {
+                    && object instanceof Physics
+                    && ((Physics) object).getBoxColider().intersected(boxColider)
+                    && object.isActive) {
                 return (E) object;
             }
         }
@@ -99,30 +90,27 @@ public class GameObject {
         this.position = new Vector2D();
         this.velocity = new Vector2D();
         isActive = true;
-        this.anchor = new Vector2D(0.5f,0.5f);
+        this.anchor = new Vector2D(0.5f, 0.5f);
         addNew(this); // cho gameObject vao mang quan li
     }
 
-    public void run()
-    {
+    public void run() {
         this.position.add(this.velocity);
     }
 
     public void render(Graphics g) {
-        if(this.renderer != null) {
+        if (this.renderer != null) {
             this.renderer.render(g, this);
         }
     }
 
-    public void deactive()
-    {
+    public void deactive() {
         this.isActive = false;
     }
 
-    public void reset()
-    {
+    public void reset() {
         this.isActive = true;
     }
 
-    
+
 }

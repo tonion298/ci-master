@@ -70,7 +70,7 @@ public class GameWindow extends JFrame {
 
     private void createGamePanel() {
         this.gamePanel = new GamePanel();
-        this.gamePanel.setPreferredSize(new Dimension(800, 600));
+        this.gamePanel.setPreferredSize(new Dimension(Setting.SCREEN_WIDTH, Setting.SCREEN_HEIGHT));
         this.add(this.gamePanel);
         this.pack();
     }

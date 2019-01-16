@@ -1,9 +1,9 @@
-package game;
+package game.player;
 
+import game.GameObject;
 import game.renderer.Animation;
 import tklibs.SpriteUtils;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -24,9 +24,10 @@ public class Sphere extends GameObject {
     }
 
     int count; //TODO: continue editing
+
     private void fire() {
         this.count++;
-        if(this.count > 20) {
+        if (this.count > 20) {
             SphereBullet bullet = GameObject.recycle(SphereBullet.class);
             bullet.position.set(this.position);
             this.count = 0;

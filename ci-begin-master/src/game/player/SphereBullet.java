@@ -1,7 +1,7 @@
-package game;
+package game.player;
 
+import game.GameObject;
 import game.renderer.Animation;
-import game.renderer.SingleImageRenderer;
 import tklibs.SpriteUtils;
 
 import java.awt.image.BufferedImage;
@@ -19,16 +19,15 @@ public class SphereBullet extends GameObject {
 //        this.renderer = new SingleImageRenderer(image);
         this.velocity.set(0, -7);
     }
+
     @Override
-    public void run()
-    {
+    public void run() {
         super.run();
         this.deactiveIfNeeded();
     }
 
     private void deactiveIfNeeded() {
-        if (this.position.y < -100)
-        {
+        if (this.position.y < -100) {
             this.deactive();
         }
     }

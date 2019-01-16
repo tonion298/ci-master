@@ -1,5 +1,6 @@
-package game;
+package game.player;
 
+import game.GameObject;
 import game.enemy.Enemy;
 import physics.BoxColider;
 import game.renderer.Animation;
@@ -9,7 +10,7 @@ import tklibs.SpriteUtils;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class    PlayerBullet extends GameObject implements Physics {
+public class PlayerBullet extends GameObject implements Physics {
     BoxColider boxColider;
 
     public PlayerBullet() {
@@ -38,8 +39,7 @@ public class    PlayerBullet extends GameObject implements Physics {
     }
 
     private void deactiveIfNeeded() {
-        if (this.position.y < -100)
-        {
+        if (this.position.y < -100) {
             this.deactive();
         }
     }

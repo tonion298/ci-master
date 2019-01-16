@@ -1,23 +1,21 @@
 package game;
 
-import game.enemy.Enemy;
-import tklibs.SpriteUtils;
+import game.player.Player;
+import game.enemy.EnemySummoner;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
     public GamePanel() {
         GameObject.recycle(Background.class);
         GameObject.recycle(Player.class);
-        Enemy enemy = GameObject.recycle(Enemy.class);
+        GameObject.recycle(EnemySummoner.class);
 //        new Background();
-//        new Player();
+//        new player();
 //        Enemy enemy = new Enemy();
-        enemy.position.set(100, 200);
+//       enemy.position.set(100, 200);
     }
 
     public void gameLoop() {
