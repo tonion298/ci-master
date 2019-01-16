@@ -11,9 +11,12 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel {
 
     public GamePanel() {
-        new Background();
-        new Player();
-        Enemy enemy = new Enemy();
+        GameObject.recycle(Background.class);
+        GameObject.recycle(Player.class);
+        Enemy enemy = GameObject.recycle(Enemy.class);
+//        new Background();
+//        new Player();
+//        Enemy enemy = new Enemy();
         enemy.position.set(100, 200);
     }
 

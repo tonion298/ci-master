@@ -19,4 +19,18 @@ public class SphereBullet extends GameObject {
 //        this.renderer = new SingleImageRenderer(image);
         this.velocity.set(0, -7);
     }
+    @Override
+    public void run()
+    {
+        super.run();
+        this.deactiveIfNeeded();
+    }
+
+    private void deactiveIfNeeded() {
+        if (this.position.y < -100)
+        {
+            this.deactive();
+        }
+    }
 }
+

@@ -9,7 +9,7 @@ import tklibs.SpriteUtils;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class PlayerBullet extends GameObject implements Physics {
+public class    PlayerBullet extends GameObject implements Physics {
     BoxColider boxColider;
 
     public PlayerBullet() {
@@ -21,7 +21,7 @@ public class PlayerBullet extends GameObject implements Physics {
         images.add(SpriteUtils.loadImage("assets/images/player-bullets/a/3.png"));
         this.renderer = new Animation(images, 0);
         this.velocity.set(0, -5);
-        this.boxColider = new BoxColider(this.position, 24, 24);
+        this.boxColider = new BoxColider(this, 24, 24);
 
     }
 
@@ -33,6 +33,14 @@ public class PlayerBullet extends GameObject implements Physics {
         if (enemy != null) {
             System.out.println("hit");
             enemy.deactive();
+        }
+        this.deactiveIfNeeded();
+    }
+
+    private void deactiveIfNeeded() {
+        if (this.position.y < -100)
+        {
+            this.deactive();
         }
     }
 

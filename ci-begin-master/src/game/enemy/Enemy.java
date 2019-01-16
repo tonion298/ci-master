@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class Enemy extends GameObject implements Physics {
     BoxColider boxColider;
     FrameCounter fireCounter;
+    FrameCounter enemyCounter;
 
     public Enemy() {
         ArrayList<BufferedImage> images = new ArrayList<>();
@@ -21,8 +22,9 @@ public class Enemy extends GameObject implements Physics {
         images.add(SpriteUtils.loadImage("assets/images/enemies/level0/pink/2.png"));
         images.add(SpriteUtils.loadImage("assets/images/enemies/level0/pink/3.png"));
         this.renderer = new Animation(images);
-        this.boxColider = new BoxColider(this.position, 30, 30);
+        this.boxColider = new BoxColider(this, 30, 30);
         fireCounter = new FrameCounter(20);
+        enemyCounter = new FrameCounter(60);
         this.velocity.set(1,0);
     }
 
@@ -31,6 +33,7 @@ public class Enemy extends GameObject implements Physics {
         super.run();
         this.fire();
         this.autoMove();
+        this.enemySummoner();
     }
 
     private void autoMove() {
@@ -44,11 +47,19 @@ public class Enemy extends GameObject implements Physics {
         }
     }
 
-
+    private void enemySummoner()
+    {
+        if (enemyCounter.run())
+        {
+            Enemy enemy = GameObject.recycle(Enemy.class);
+            enemy.position.set(this.position.x + 2, this.position.y);
+            enemyCounter.reset();
+        }
+    }
 
     private void fire() {
         if (fireCounter.run()) {
-            EnemyBullet enemyBullet = new EnemyBullet();
+            EnemyBullet enemyBullet = GameObject.recycle(EnemyBullet.class);
             enemyBullet.position.set(this.position);
             fireCounter.reset();
         }

@@ -27,7 +27,7 @@ public class Sphere extends GameObject {
     private void fire() {
         this.count++;
         if(this.count > 20) {
-            SphereBullet bullet = new SphereBullet();
+            SphereBullet bullet = GameObject.recycle(SphereBullet.class);
             bullet.position.set(this.position);
             this.count = 0;
         }

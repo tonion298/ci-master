@@ -29,8 +29,8 @@ public class Animation extends Renderer {
     public void render(Graphics g, GameObject master) {
         BufferedImage currentImage = this.images.get(this.currentImageIndex);
         g.drawImage(currentImage
-                , (int)master.position.x
-                , (int)master.position.y
+                , (int)(master.position.x - master.anchor.x * currentImage.getWidth())
+                , (int)(master.position.y - master.anchor.y * currentImage.getHeight())
                 , null);
 
         this.countRender++;

@@ -16,7 +16,8 @@ public class Player extends GameObject implements Physics {
     Sphere sphereRight;
     BoxColider boxColider;
     FrameCounter fireCounter;
-
+    boolean immune;
+    int hp;
     public Player() {
         super();
         ArrayList<BufferedImage> images = new ArrayList<>();
@@ -32,8 +33,10 @@ public class Player extends GameObject implements Physics {
         this.sphereLeft = new Sphere();
         this.sphereRight = new Sphere();
         this.updateSpherePosition();
-        this.boxColider = new BoxColider(this.position, 32, 48);
+        this.boxColider = new BoxColider(this, 32, 48);
         this.fireCounter = new FrameCounter(20);
+        this.hp = 3;
+        this.immune = false;
     }
 
     @Override
@@ -43,28 +46,29 @@ public class Player extends GameObject implements Physics {
         this.limitPosition();
         this.fire();
         this.updateSpherePosition();
-        this.takenDamage();
+        this.checkImmune();
     }
-    int hp = 3;
-    private void takenDamage() {
-        EnemyBullet bullet = GameObject.findIntersected(EnemyBullet.class, this.boxColider);
-        if(bullet != null)
+
+
+    int immuneCount; //TODO: thay bang frameCounter
+    private void checkImmune() {
+        if (this.immune)
         {
-            hp--;
-        }
-        if (hp == 0)
-        {
-            this.deactive();
-            sphereLeft.deactive();
-            sphereRight.deactive();
+            this.immuneCount++;
+            if (this.immuneCount > 60)
+            {
+                this.immune = false;
+                this.immuneCount = 0;
+            }
         }
     }
 
+
     private void updateSpherePosition() {
         this.sphereLeft.position.set(this.position)
-                    .add(-20, 30);
+                    .add(-30, 15);
         this.sphereRight.position.set(this.position)
-                    .add(30, 30);
+                    .add(30, 15);
     }
 
     private void fire() {
@@ -74,7 +78,7 @@ public class Player extends GameObject implements Physics {
                 float endAngle = -3 * (float)Math.PI / 4;
                 float offset = (endAngle - startAngle) / 4;
                 for (int i = 0; i < 5; i++) {
-                    PlayerBullet bullet = new PlayerBullet();
+                    PlayerBullet bullet = GameObject.recycle(PlayerBullet.class);
                     bullet.position.set(this.position.x - 15, this.position.y);
                     bullet.velocity.setAngle(startAngle + offset * i);
                     this.fireCounter.reset();
@@ -84,17 +88,17 @@ public class Player extends GameObject implements Physics {
     }
 
     private void limitPosition() {
-        if (this.position.y < 0) {
-            this.position.set(this.position.x, 0);
+        if (this.position.y < 25) {
+            this.position.set(this.position.x, 25);
         }
-        if (this.position.y > 600 - 48) {
-            this.position.set(this.position.x, 600 - 48);
+        if (this.position.y > 600 - 36) {
+            this.position.set(this.position.x, 600 - 36);
         }
-        if (this.position.x < 0) {
-            this.position.set(0, this.position.y);
+        if (this.position.x < 36) {
+            this.position.set(36, this.position.y);
         }
-        if (this.position.x > 384 - 32) {
-            this.position.set(384 - 32, this.position.y);
+        if (this.position.x > 384 - 38) {
+            this.position.set(384 - 38, this.position.y);
         }
     }
 
@@ -119,5 +123,42 @@ public class Player extends GameObject implements Physics {
     @Override
     public BoxColider getBoxColider() {
         return this.boxColider;
+    }
+
+    public void takeDamage(int damage) {
+        if(this.immune)
+        {
+            return;
+        }
+        this.hp -= damage;
+        if (this.hp <= 0 )
+        {
+            this.hp = 0;
+            this.deactive();
+            this.sphereRight.deactive();
+            this.sphereLeft.deactive();
+        }
+        else
+        {
+            this.immune = true;
+        }
+    }
+
+    int count; // thay bang frameCounter
+    @Override
+    public void render(Graphics g) {
+        if (this.immune)
+        {
+            this.count++;
+            if (this.count > 2)
+            {
+                super.render(g);
+                this.count = 0;
+            }
+        }
+        else
+        {
+            super.render(g);
+        }
     }
 }

@@ -15,6 +15,43 @@ public class GameObject {
         gameObjects.add(object);
     }
 
+    public static <E extends GameObject> E recycle(Class<E> cls)
+    {
+        //1. findInactive > reset > return
+        //2. if can not findInactive > create new > return
+        E object = findInactive(cls);
+        if(object != null)
+        {
+            object.reset();
+            return object;
+        }
+        else {
+            try
+            {
+                return cls.getConstructor().newInstance();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+    }
+
+    public static <E extends GameObject> E findInactive(Class<E> cls)
+    {
+        for(int i = 0; i < gameObjects.size(); i++)
+        {
+            GameObject object = gameObjects.get(i);
+            if(!object.isActive
+                && cls.isAssignableFrom(object.getClass()))
+            {
+                return (E)object;
+            }
+
+        }
+        return null;
+    }
+
     public static void clearAll() {
         gameObjects.clear();
     }
@@ -56,15 +93,18 @@ public class GameObject {
     public Vector2D position;
     public Vector2D velocity;
     public boolean isActive;
+    public Vector2D anchor;
 
     public GameObject() { //ham tao rong
         this.position = new Vector2D();
         this.velocity = new Vector2D();
         isActive = true;
+        this.anchor = new Vector2D(0.5f,0.5f);
         addNew(this); // cho gameObject vao mang quan li
     }
 
-    public void run() {
+    public void run()
+    {
         this.position.add(this.velocity);
     }
 
@@ -74,7 +114,15 @@ public class GameObject {
         }
     }
 
-    public void deactive() {
+    public void deactive()
+    {
         this.isActive = false;
     }
+
+    public void reset()
+    {
+        this.isActive = true;
+    }
+
+    
 }
