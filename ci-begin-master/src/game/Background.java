@@ -21,5 +21,13 @@ public class Background extends GameObject {
     public void run() {
         super.run();
         // TODO: gioi han di chuyen cho Background
+        this.limitPositon();
+    }
+
+    private void limitPositon() {
+        if (this.position.y == 0)
+        {
+            this.velocity.set(0,0);
+        }
     }
 }
